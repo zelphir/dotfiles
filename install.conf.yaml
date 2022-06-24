@@ -1,0 +1,25 @@
+- defaults:
+    link:
+      create: true
+      relink: true
+
+- clean: ['~', '~/.config']
+
+- link:
+    ~/.editorconfig:
+    ~/.gitattributes:
+    ~/.gitconfig:
+    ~/.gitignore:
+    ~/.stylua.toml:
+    ~/.config/bat: bat
+    ~/.config/fish/config.fish: fish/config.fish
+    ~/.config/fish/themes: fish/themes
+    ~/.config/karabiner: karabiner
+    ~/.config/nvim: nvim
+    ~/.config/wezterm/: wezterm
+
+# - shell:
+#     - [git submodule update --init --recursive, Installing submodules]
+#     - [scripts/homebrew.sh, Installing Homebrew]
+#     - [brew bundle, Installing brew packages]
+#     - [curl https://sh.rustup.rs -sSf | sh -s -- -y, Installing Cargo/Rust]

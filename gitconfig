@@ -1,0 +1,112 @@
+[user]
+  email = zelphir@gmail.com
+  name = roberto
+
+[core]
+    pager = delta
+    editor = nvim
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = side-by-side line-numbers decorations
+    syntax-theme = tokyonight_night
+    true-color = always
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none
+    hunk-header-decoration-style = cyan box ul
+
+[delta "line-numbers"]
+    line-numbers-left-style = cyan
+    line-numbers-right-style = cyan
+    line-numbers-minus-style = 124
+    line-numbers-plus-style = 28
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+[credential]
+  helper = osxkeychain
+
+[alias]
+  # View abbreviated SHA, description, and history graph of the latest 20 commits
+  l = log --pretty=oneline -n 20 --graph --abbrev-commit
+
+  # View the current working tree status using the short format
+  s = status -s
+  sl = status
+
+  d = diff
+  # Show the diff between the latest commit and the current state
+  dl = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+  # `git di $number` shows the diff between the state `$number` revisions ago and the current state
+  di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+  df = icdiff
+
+  # difftool
+  dt = difftool -y
+
+  # Pull in remote changes for the current repository and all its submodules
+  p = !"git pull; git submodule foreach git pull origin master"
+
+  # Clone a repository including all submodules
+  c = clone --recursive
+
+  # Commit all changes
+  ca = !git add -A && git commit -av
+
+  # Amend commit without editing
+  can = !git add . && git commit --amend --no-edit
+
+  # Undo all changes
+  u = !git checkout -- .
+
+  # Switch to a branch, creating it if necessary
+  co = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+
+  # Show verbose output about tags, branches or remotes
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
+
+  # Amend the currently staged files to the latest commit
+  amend = commit --amend --reuse-message=HEAD
+
+  # Credit an author on the latest commit
+  credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+
+  # Interactive rebase with the given number of latest commits
+  reb = "!r() { git rebase -i HEAD~$1; }; r"
+
+  # Remove the old tag with this name and tag the latest commit with it.
+  retag = "!r() { git tag -d $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
+
+  # Find branches containing commit
+  fb = "!f() { git branch -a --contains $1; }; f"
+
+  # Find tags containing commit
+  ft = "!f() { git describe --always --contains $1; }; f"
+
+  # Find commits by source code
+  fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+
+  # Find commits by commit message
+  fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+
+  # Remove branches that have already been merged with master
+  # a.k.a. ‘delete merged’
+  dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+  # Push with --force
+  pf = "!f() { git push origin $(git symbolic-ref --short HEAD) -f; }; f"
+
+  # List contributors with number of commits
+  contributors = shortlog --summary --numbered
